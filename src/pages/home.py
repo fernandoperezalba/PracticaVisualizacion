@@ -11,8 +11,6 @@ import numpy as np
 import plotly.figure_factory as ff
 from plotly.colors import n_colors
 
-import plotly.express as px
-
 basepath = os.path.join(os.path.dirname(__file__), "../../")
 sys.path.insert(1, basepath)
 
@@ -233,10 +231,7 @@ home_layout = html.Div(
                                     max=max(available_years),
                                     step=None,
                                     value=max(available_years),
-                                    marks={
-                                        str(year): str(year) if (year % 5 == 0 or year % 10 == 0) else ""
-                                        for year in available_years
-                                    },
+                                    marks={str(year): str(year) if (year % 5 == 0) else "" for year in available_years},
                                 ),
                             ],
                             id="barra_year",
