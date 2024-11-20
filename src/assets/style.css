@@ -37,6 +37,15 @@ body {
   position: relative;
 }
 
+.create_container1_1 {
+  align-items: center;
+  border-radius: 15px;
+  background-color: #D1DCFF;
+  margin: 8px;
+  padding: 8px;
+  position: relative;
+}
+
 .dcc_compon {
   margin: 0 auto;
   padding: 5px;
@@ -118,4 +127,34 @@ body {
   color: #fff;
   background-color: rgba(159, 136, 165, 0.555);
   border-radius: 5px;
+}
+
+
+.CalendarDay__selected_span {
+  background: #488BFF;
+}
+
+
+/* Cambiar el color del cuadrado de la fecha seleccionada */
+.custom-date-picker .CalendarDay__selected {
+  background-color: #488BFF !important; /* Cambia a tu color preferido */
+  color: white !important; /* Cambia el color del texto */
+}
+
+/* Cambiar el color del cuadrado cuando está enfocado */
+.custom-date-picker .CalendarDay__selected:hover {
+  background-color: #0056b3 !important; /* Color cuando pasa el mouse */
+}
+
+/* Opcional: Cambiar bordes de las fechas seleccionadas */
+.custom-date-picker .CalendarDay__selected_span {
+  border: 2px solid #488BFF !important;
+}
+
+.DayPickerKeyboardShortcuts_show__bottomRight::before{
+  border-right: 33px solid #488BFF;
+}
+
+.DayPickerKeyboardShortcuts_show__bottomRight::before {
+  border-right: 33px solid #488BFF;
 }

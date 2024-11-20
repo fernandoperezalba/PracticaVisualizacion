@@ -10,3 +10,11 @@ def load_processed_data():
     df = pd.read_csv("data/processed/df_plots.csv")
     df["release_date"] = pd.to_datetime(df["release_date"], format="%Y-%m-%d")
     return df
+
+
+def load_model_data():
+    df = pd.read_csv("data/processed/df_model.csv")
+    target = "revenue"
+    df_X = df.drop(columns=[target, "vote_average", "vote_count"])
+    df_y = df[[target]]
+    return df_X, df_y

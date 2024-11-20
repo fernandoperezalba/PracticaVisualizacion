@@ -1,9 +1,6 @@
 import os
 import sys
-
-import dash
 from dash import dcc, html
-import dash_bootstrap_components as dbc
 
 basepath = os.path.join(os.path.dirname(__file__), "../")
 sys.path.insert(1, basepath)
@@ -14,8 +11,11 @@ from src.pages.analysis import analysis_layout
 from src.pages.model import model_layout
 from src.preprocessing.data_processing import data_processing
 from src.app_init import app
+from src.modelling.train_model import train_model
+
 
 df_plots, df_model = data_processing()
+model = train_model(df_model)
 
 # Initialize the Dash app
 # app = dash.Dash(
