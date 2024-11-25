@@ -1,3 +1,5 @@
+from app import app
+from src.utils.utils import load_processed_data
 import sys
 import os
 from dash import dcc, html
@@ -9,9 +11,6 @@ import plotly.express as px
 
 basepath = os.path.join(os.path.dirname(__file__), "../../")
 sys.path.insert(1, basepath)
-
-from src.utils.utils import load_processed_data
-from src.app_init import app
 
 
 df = load_processed_data()
@@ -77,7 +76,8 @@ def bubbleGraph():
                 ],
                 id="slider_year",
             ),
-            dcc.Graph(id="bubble", config={"displayModeBar": "hover"}, style={"height": "500px", "width": "100%"}),
+            dcc.Graph(id="bubble", config={"displayModeBar": "hover"}, style={
+                      "height": "500px", "width": "100%"}),
         ]
     )
     return bubble_layout
@@ -93,7 +93,8 @@ def filterGraph():
                             html.H3(
                                 children=["Filtros"],
                                 id="primer_grupo",
-                                style={"display": "block", "text-align": "center"},
+                                style={"display": "block",
+                                       "text-align": "center"},
                             ),
                             html.P("Año:", style={"color": "black"}),
                             dcc.RangeSlider(
@@ -102,26 +103,34 @@ def filterGraph():
                                 step=1,
                                 min=min(available_years),
                                 max=max(available_years),
-                                value=[min(available_years), max(available_years)],  # default value initially chosen
+                                # default value initially chosen
+                                value=[min(available_years),
+                                       max(available_years)],
                                 dots=False,  # True, False - insert dots, only when step>1
                                 allowCross=False,  # True,False - Manage handle crossover
                                 updatemode="mouseup",  # 'mouseup', 'drag' - update value method
                                 included=True,  # True, False - highlight handle
-                                tooltip={"always_visible": True, "placement": "bottom"},  # show current slider values
+                                # show current slider values
+                                tooltip={"always_visible": True,
+                                         "placement": "bottom"},
                             ),
-                            html.P("Duración (mins):", style={"color": "black"}),
+                            html.P("Duración (mins):",
+                                   style={"color": "black"}),
                             dcc.RangeSlider(
                                 id="select_runtime",  # any name you'd like to give it
                                 marks=None,
                                 step=1,
                                 min=df["runtime"].min(),
                                 max=df["runtime"].max(),
-                                value=[df["runtime"].min(), df["runtime"].max()],  # default value initially chosen
+                                # default value initially chosen
+                                value=[df["runtime"].min(), df["runtime"].max()],
                                 dots=False,  # True, False - insert dots, only when step>1
                                 allowCross=False,  # True,False - Manage handle crossover
                                 updatemode="mouseup",  # 'mouseup', 'drag' - update value method
                                 included=True,  # True, False - highlight handle
-                                tooltip={"always_visible": True, "placement": "bottom"},  # show current slider values
+                                # show current slider values
+                                tooltip={"always_visible": True,
+                                         "placement": "bottom"},
                             ),
                             html.P("Popularidad:", style={"color": "black"}),
                             dcc.RangeSlider(
@@ -138,7 +147,9 @@ def filterGraph():
                                 allowCross=False,  # True,False - Manage handle crossover
                                 updatemode="mouseup",  # 'mouseup', 'drag' - update value method
                                 included=True,  # True, False - highlight handle
-                                tooltip={"always_visible": True, "placement": "bottom"},  # show current slider values
+                                # show current slider values
+                                tooltip={"always_visible": True,
+                                         "placement": "bottom"},
                             ),
                             html.P("Géneros:", style={"color": "black"}),
                             dcc.Dropdown(
@@ -193,7 +204,8 @@ def filterGraph():
                         },
                     ),  # cierra div bloque izquierdo
                     html.Div(  # Bloque derecho
-                        children=[dcc.Graph(id="dropdown_figure", style={"display": "none"})],
+                        children=[dcc.Graph(id="dropdown_figure", style={
+                                            "display": "none"})],
                         style={
                             "width": "700px",
                             "height": "600px",
@@ -318,12 +330,14 @@ def figure_dropdown(
 
         # Filtro por año
         if select_year_value:
-            df_aux = df_aux[(df_aux["year"] >= select_year_value[0]) & (df_aux["year"] <= select_year_value[1])]
+            df_aux = df_aux[(df_aux["year"] >= select_year_value[0]) & (
+                df_aux["year"] <= select_year_value[1])]
 
         # Filtro por año
         if select_runtime_value:
             df_aux = df_aux[
-                (df_aux["runtime"] >= select_runtime_value[0]) & (df_aux["runtime"] <= select_runtime_value[1])
+                (df_aux["runtime"] >= select_runtime_value[0]) & (
+                    df_aux["runtime"] <= select_runtime_value[1])
             ]
 
         # Filtro por año
@@ -336,7 +350,8 @@ def figure_dropdown(
         # Filtro por géneros
         if dropdown_genre_value:
             # Si el valor de género es una lista, filtrar filas que contengan alguno de los géneros seleccionados
-            df_aux = df_aux[df_aux["genres"].apply(lambda x: any(genre in x.split() for genre in dropdown_genre_value))]
+            df_aux = df_aux[df_aux["genres"].apply(lambda x: any(
+                genre in x.split() for genre in dropdown_genre_value))]
 
         # Filtro por compañías
         if dropdown_company_value:
@@ -346,10 +361,12 @@ def figure_dropdown(
 
         # Filtro por idioma
         if dropdown_language_value:
-            df_aux = df_aux[df_aux["original_language"].isin(dropdown_language_value)]
+            df_aux = df_aux[df_aux["original_language"].isin(
+                dropdown_language_value)]
 
         # Agrupar por año y calcular la suma de las columnas de interés
-        df_aux = df_aux.groupby("year")[["revenue", "budget", "gdp"]].mean().reset_index()
+        df_aux = df_aux.groupby(
+            "year")[["revenue", "budget", "gdp"]].mean().reset_index()
 
         # Crear la figura
         fig = go.Figure()
@@ -388,7 +405,8 @@ def figure_dropdown(
             xaxis_title="Año",
             yaxis_title="$",
             bargap=0.1,
-            legend=dict(bgcolor="white", yanchor="top", y=0.99, xanchor="left", x=0.01),
+            legend=dict(bgcolor="white", yanchor="top",
+                        y=0.99, xanchor="left", x=0.01),
             font=dict(size=8),
             plot_bgcolor="#F3F6FF",
             paper_bgcolor="#F3F6FF",
@@ -410,11 +428,13 @@ def update_bubble(select_year_value):
     df_aux = df_aux.explode("genres")
 
     # Paso 3: Agrupar por género y calcular la media de 'vote_average' y 'vote_count' y la suma de 'revenue'
-    df_aux_scores = df_aux.groupby("genres")[["vote_average", "vote_count"]].mean().reset_index()
+    df_aux_scores = df_aux.groupby(
+        "genres")[["vote_average", "vote_count"]].mean().reset_index()
     df_aux_sales = df_aux.groupby("genres")["revenue"].mean().reset_index()
 
     # Unir los DataFrames de scores y ventas
-    df_aux2 = pd.merge(df_aux_scores, df_aux_sales[["genres", "revenue"]], on="genres")
+    df_aux2 = pd.merge(df_aux_scores, df_aux_sales[[
+                       "genres", "revenue"]], on="genres")
 
     # Paso 4: Crear el gráfico
     fig = px.scatter(

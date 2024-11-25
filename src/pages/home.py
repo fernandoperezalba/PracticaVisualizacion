@@ -1,3 +1,5 @@
+from app import app
+from src.utils.utils import load_processed_data
 import os
 import sys
 from dash import dcc, html
@@ -12,9 +14,6 @@ from plotly.colors import n_colors
 basepath = os.path.join(os.path.dirname(__file__), "../../")
 sys.path.insert(1, basepath)
 
-from src.utils.utils import load_processed_data
-from src.app_init import app
-
 
 df = load_processed_data()
 available_years = sorted(df["year"].unique())
@@ -25,17 +24,21 @@ def topGenres():
     # Obtener top 10 géneros
     df["genres_list"] = df["genres"].str.split()
     genre_revenue_df = df.explode("genres_list")[["genres_list", "revenue"]]
-    genre_avg_revenue = genre_revenue_df.groupby("genres_list")["revenue"].mean().reset_index()
-    top_10_genres_revenues = genre_avg_revenue.sort_values(by="revenue", ascending=True).tail(10)
+    genre_avg_revenue = genre_revenue_df.groupby(
+        "genres_list")["revenue"].mean().reset_index()
+    top_10_genres_revenues = genre_avg_revenue.sort_values(
+        by="revenue", ascending=True).tail(10)
 
     # Filtrar el DataFrame original para contener solo el top 10 géneros
     top_10_genres_names = top_10_genres_revenues["genres_list"]
-    top_10_genres = genre_revenue_df[genre_revenue_df["genres_list"].isin(top_10_genres_names)]
+    top_10_genres = genre_revenue_df[genre_revenue_df["genres_list"].isin(
+        top_10_genres_names)]
 
     fig = go.Figure()
     # Añadir un box plot para cada género
     for genre in top_10_genres_names:
-        genre_data = top_10_genres[top_10_genres["genres_list"] == genre]["revenue"]
+        genre_data = top_10_genres[top_10_genres["genres_list"]
+                                   == genre]["revenue"]
 
         fig.add_trace(
             go.Box(
@@ -64,14 +67,16 @@ def topGenres():
 
 
 def topDirectors():
-    director_avg_revenue = df.groupby("director")["revenue"].mean().reset_index()
+    director_avg_revenue = df.groupby(
+        "director")["revenue"].mean().reset_index()
     top10directors = director_avg_revenue.sort_values(by="revenue").tail(10)
 
     # Crear el gráfico de barras con plotly.graph_objects
     fig = go.Figure()
 
     fig.add_trace(
-        go.Bar(y=top10directors["director"], x=top10directors["revenue"], marker=dict(color="#55A1FF"), orientation="h")
+        go.Bar(y=top10directors["director"], x=top10directors["revenue"], marker=dict(
+            color="#55A1FF"), orientation="h")
     )
 
     # Personalizar el gráfico
@@ -91,7 +96,8 @@ def topDirectors():
 
 def correlationMap():
     df_aux = df[
-        ["revenue", "budget", "popularity", "runtime", "vote_average", "vote_count", "year", "month", "weekday", "gdp"]
+        ["revenue", "budget", "popularity", "runtime", "vote_average",
+            "vote_count", "year", "month", "weekday", "gdp"]
     ]
     df_num = df_aux.select_dtypes(include="number")
     corr = df_num.corr()
@@ -110,7 +116,8 @@ def correlationMap():
         [1.0, "#00379A"],  # Color final
     ]
 
-    heatmap = ff.create_annotated_heatmap(z, x=x, y=y, annotation_text=z_text, colorscale=custom_colorscale)
+    heatmap = ff.create_annotated_heatmap(
+        z, x=x, y=y, annotation_text=z_text, colorscale=custom_colorscale)
 
     heatmap.update_layout(
         title="Matriz de correlación",
@@ -149,7 +156,8 @@ def productionCompanies():
 
     # Step 2: Add a new column for the grouped category
     df_long["group"] = df_long["production_company"].replace(
-        {"Twentieth Century Fox Film Corporation": "Disney Group", "Walt Disney Pictures": "Disney Group"}
+        {"Twentieth Century Fox Film Corporation": "Disney Group",
+            "Walt Disney Pictures": "Disney Group"}
     )
 
     # Step 3: Combine group and individual data
@@ -157,7 +165,8 @@ def productionCompanies():
     df_combined = pd.concat(
         [
             df_long,  # Individual companies
-            df_long[df_long["group"] == "Disney Group"].assign(production_company="Disney Group"),  # Group category
+            df_long[df_long["group"] == "Disney Group"].assign(
+                production_company="Disney Group"),  # Group category
         ]
     )
 
@@ -168,7 +177,8 @@ def productionCompanies():
         .reset_index()
     )
 
-    rangeColors = n_colors("rgb(0,29,80)", "rgb(85,161,255)", len(df_grouped), colortype="rgb")
+    rangeColors = n_colors("rgb(0,29,80)", "rgb(85,161,255)",
+                           len(df_grouped), colortype="rgb")
     i = 0
     fig = go.Figure()
     # Add scatter points for each company
@@ -229,7 +239,8 @@ home_layout = html.Div(
                                     max=max(available_years),
                                     step=None,
                                     value=max(available_years),
-                                    marks={str(year): str(year) if (year % 5 == 0) else "" for year in available_years},
+                                    marks={str(year): str(year) if (
+                                        year % 5 == 0) else "" for year in available_years},
                                 ),
                             ],
                             id="barra_year",
@@ -243,7 +254,8 @@ home_layout = html.Div(
                                 dbc.Col(
                                     html.Div(
                                         [
-                                            html.P("Recaudación Total", style={"color": "#00379A"}),
+                                            html.P("Recaudación Total", style={
+                                                   "color": "#00379A"}),
                                             html.Div(id="valorRevenueTotal"),
                                         ],
                                         id="revenue_total",
@@ -254,7 +266,8 @@ home_layout = html.Div(
                                 dbc.Col(
                                     html.Div(
                                         [
-                                            html.P("Recaudación Media", style={"color": "#00379A"}),
+                                            html.P("Recaudación Media", style={
+                                                   "color": "#00379A"}),
                                             html.Div(id="valorRevenueMean"),
                                         ],
                                         id="revenue_mean",
@@ -265,7 +278,8 @@ home_layout = html.Div(
                                 dbc.Col(
                                     html.Div(
                                         [
-                                            html.P("Recuento Películas", style={"color": "#00379A"}),
+                                            html.P("Recuento Películas",
+                                                   style={"color": "#00379A"}),
                                             html.Div(id="valorCountMovies"),
                                         ],
                                         id="count_movies",
@@ -276,7 +290,8 @@ home_layout = html.Div(
                                 dbc.Col(
                                     html.Div(
                                         [
-                                            html.P("Duración Media", style={"color": "#00379A"}),
+                                            html.P("Duración Media", style={
+                                                   "color": "#00379A"}),
                                             html.Div(id="valorRuntimeMean"),
                                         ],
                                         id="runtime_mean",
@@ -287,7 +302,8 @@ home_layout = html.Div(
                                 dbc.Col(
                                     html.Div(
                                         [
-                                            html.P("Película nº1", style={"color": "#00379A"}),
+                                            html.P("Película nº1", style={
+                                                   "color": "#00379A"}),
                                             html.Div(id="valorMovieTop"),
                                         ],
                                         id="top_movie",
@@ -338,7 +354,8 @@ home_layout = html.Div(
                     [
                         dcc.RadioItems(
                             id="radio_items1",
-                            labelStyle={"display": "inline-block", "font-size": 12},
+                            labelStyle={
+                                "display": "inline-block", "font-size": 12},
                             value="year",
                             options=[
                                 {"label": "Año", "value": "year"},
@@ -467,8 +484,10 @@ def update_text(select_year_value):
 
 @app.callback(Output("timeGraph", "figure"), [Input("radio_items1", "value")])
 def timeGraph(radio_items1):
-    df_aux = df.groupby(df[radio_items1])[["revenue", "budget", "gdp"]].mean().reset_index()[:-1]
-    radio_items1_labels = {"year": "Año", "month": "Mes", "day_of_year": "Día del año", "weekday": "Día de la semana"}
+    df_aux = df.groupby(df[radio_items1])[
+        ["revenue", "budget", "gdp"]].mean().reset_index()[:-1]
+    radio_items1_labels = {"year": "Año", "month": "Mes",
+                           "day_of_year": "Día del año", "weekday": "Día de la semana"}
 
     weekday_mapping = {
         0: "Lunes",
@@ -512,7 +531,8 @@ def timeGraph(radio_items1):
         title="Evolución Temporal",
         xaxis_title=radio_items1_labels[radio_items1],
         yaxis_title="$",
-        legend=dict(bgcolor="white", yanchor="top", y=0.99, xanchor="left", x=0.01),
+        legend=dict(bgcolor="white", yanchor="top",
+                    y=0.99, xanchor="left", x=0.01),
         font=dict(size=8),
         plot_bgcolor="#F3F6FF",
         paper_bgcolor="#F3F6FF",

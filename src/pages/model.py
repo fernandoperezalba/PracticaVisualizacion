@@ -1,3 +1,7 @@
+from src.preprocessing.data_processing import extract_date_related_features
+from src.pages.analysis import options_dropdown_genre, options_dropdown_companies, options_dropdown_language
+from app import app
+from src.utils.utils import load_model_data
 import os
 import sys
 from dash import dcc, html
@@ -11,11 +15,6 @@ import numpy as np
 basepath = os.path.join(os.path.dirname(__file__), "../../")
 sys.path.insert(1, basepath)
 
-from src.utils.utils import load_model_data
-from src.app_init import app
-from src.pages.analysis import options_dropdown_genre, options_dropdown_companies, options_dropdown_language
-from src.preprocessing.data_processing import extract_date_related_features
-
 
 # load model input data
 df_X, df_y = load_model_data()
@@ -28,7 +27,8 @@ df_metrics = pd.read_csv("data/models/df_metrics.csv")
 gdp_forecast = pd.read_csv("data/raw/GDP_forecast.csv")
 
 # Crear opciones para los países
-prod_countries = ["Canada", "France", "Germany", "Other_country", "United Kingdom", "United States of America"]
+prod_countries = ["Canada", "France", "Germany",
+                  "Other_country", "United Kingdom", "United States of America"]
 prod_countries.sort()
 options_dropdown_countries = []
 for country in prod_countries:
@@ -40,11 +40,15 @@ def predict_vs_real_train():
     y_pred = model.predict(df_X)
     df_pred_test = pd.DataFrame(y_pred)
     df_pred_test.columns = ["revenue"]
-    df_pred_test["date"] = pd.to_datetime(df_X[["year", "month", "day"]]).reset_index(drop=True)
-    df_y["date"] = pd.to_datetime(df_X[["year", "month", "day"]]).reset_index(drop=True)
+    df_pred_test["date"] = pd.to_datetime(
+        df_X[["year", "month", "day"]]).reset_index(drop=True)
+    df_y["date"] = pd.to_datetime(
+        df_X[["year", "month", "day"]]).reset_index(drop=True)
 
-    df_aux = df_pred_test.groupby(df_pred_test["date"].dt.year)["revenue"].mean().reset_index()[:-1]
-    df_aux2 = df_y.groupby(df_y["date"].dt.year)["revenue"].mean().reset_index()[:-1]
+    df_aux = df_pred_test.groupby(df_pred_test["date"].dt.year)[
+        "revenue"].mean().reset_index()[:-1]
+    df_aux2 = df_y.groupby(df_y["date"].dt.year)[
+        "revenue"].mean().reset_index()[:-1]
 
     fig = go.Figure()
     fig.add_trace(
@@ -72,7 +76,8 @@ def predict_vs_real_train():
         title="Recaudación por año - real vs. predicción en entrenamiento",
         xaxis_title="Año",
         yaxis_title="Recaudación ($))",
-        legend=dict(bgcolor="white", yanchor="top", y=0.99, xanchor="left", x=0.01),
+        legend=dict(bgcolor="white", yanchor="top",
+                    y=0.99, xanchor="left", x=0.01),
         font=dict(size=8),
         margin=dict(l=0, r=0, b=0, t=30, pad=4),
         plot_bgcolor="#F3F6FF",
@@ -123,7 +128,8 @@ model_layout = html.Div(
                 html.H6(
                     children=["Análisis del modelo"],
                     id="titulo_primera_fila_modelo",
-                    style={"font-size": "1.8vw", "text-align": "left", "display": "block", "color": "#363636"},
+                    style={"font-size": "1.8vw", "text-align": "left",
+                           "display": "block", "color": "#363636"},
                 ),
                 html.Div(  # gráficos de esta fila
                     children=[
@@ -190,7 +196,8 @@ model_layout = html.Div(
                                             [
                                                 html.Div(
                                                     [
-                                                        html.P("MAPE", style={"color": "#00379A"}),
+                                                        html.P("MAPE", style={
+                                                               "color": "#00379A"}),
                                                         html.P(
                                                             f"{df_metrics['mape'].iloc[0]:.2f}%",
                                                             style={
@@ -217,7 +224,8 @@ model_layout = html.Div(
                                             [
                                                 html.Div(
                                                     [
-                                                        html.P("R2", style={"color": "#00379A"}),
+                                                        html.P("R2", style={
+                                                               "color": "#00379A"}),
                                                         html.P(
                                                             f"{df_metrics['r2'].iloc[0]:.2f}",
                                                             style={
@@ -244,7 +252,8 @@ model_layout = html.Div(
                                             [
                                                 html.Div(
                                                     [
-                                                        html.P("MAE", style={"color": "#00379A"}),
+                                                        html.P("MAE", style={
+                                                               "color": "#00379A"}),
                                                         html.P(
                                                             f"${df_metrics['mae'].iloc[0]/1000000:.0f}M",
                                                             style={
@@ -289,14 +298,16 @@ model_layout = html.Div(
                 html.H6(
                     children=["Predicción de recaudación de una película"],
                     id="titulo_segunda_fila_modelo",
-                    style={"font-size": "1.8vw", "text-align": "left", "display": "block", "color": "#363636"},
+                    style={"font-size": "1.8vw", "text-align": "left",
+                           "display": "block", "color": "#363636"},
                 ),
                 html.Div(  # elementos de esta fila
                     children=[
                         html.Div(  # Bloque izquierdo modelo
                             children=[
                                 html.P(
-                                    children=["Seleccione las características de la película:"],
+                                    children=[
+                                        "Seleccione las características de la película:"],
                                     id="movie_pred",
                                     style={
                                         "display": "block",
@@ -309,7 +320,8 @@ model_layout = html.Div(
                                             children=[
                                                 html.P(
                                                     "Fecha: ",
-                                                    style={"height": "auto", "margin-bottom": "auto"},
+                                                    style={
+                                                        "height": "auto", "margin-bottom": "auto"},
                                                 ),
                                                 dcc.DatePickerSingle(
                                                     id="selector_fecha",
@@ -326,7 +338,8 @@ model_layout = html.Div(
                                             children=[
                                                 html.P(
                                                     "Budget ($miles): ",
-                                                    style={"height": "auto", "margin-bottom": "auto"},
+                                                    style={
+                                                        "height": "auto", "margin-bottom": "auto"},
                                                 ),
                                                 dcc.Input(
                                                     id="selector_budget",
@@ -347,7 +360,8 @@ model_layout = html.Div(
                                         ),
                                         html.Div(  # Selección géneros
                                             children=[
-                                                html.P("Géneros: ", style={"height": "auto", "margin-bottom": "auto"}),
+                                                html.P("Géneros: ", style={
+                                                       "height": "auto", "margin-bottom": "auto"}),
                                                 dcc.Dropdown(
                                                     options=options_dropdown_genre,
                                                     placeholder="Seleccione géneros",
@@ -390,7 +404,8 @@ model_layout = html.Div(
                                             children=[
                                                 html.P(
                                                     "Runtime (mins): ",
-                                                    style={"height": "auto", "margin-bottom": "auto"},
+                                                    style={
+                                                        "height": "auto", "margin-bottom": "auto"},
                                                 ),
                                                 dcc.Input(
                                                     id="selector_runtime",
@@ -413,7 +428,8 @@ model_layout = html.Div(
                                             children=[
                                                 html.P(
                                                     "Productoras: ",
-                                                    style={"height": "auto", "margin-bottom": "auto"},
+                                                    style={
+                                                        "height": "auto", "margin-bottom": "auto"},
                                                 ),
                                                 dcc.Dropdown(
                                                     options=options_dropdown_companies,
@@ -435,7 +451,8 @@ model_layout = html.Div(
                                             children=[
                                                 html.P(
                                                     "Idioma: ",
-                                                    style={"height": "auto", "margin-bottom": "auto"},
+                                                    style={
+                                                        "height": "auto", "margin-bottom": "auto"},
                                                 ),
                                                 dcc.Dropdown(
                                                     options=options_dropdown_language,
@@ -454,7 +471,8 @@ model_layout = html.Div(
                                         ),
                                         html.Div(  # Selección países
                                             children=[
-                                                html.P("Países: ", style={"height": "auto", "margin-bottom": "auto"}),
+                                                html.P("Países: ", style={
+                                                       "height": "auto", "margin-bottom": "auto"}),
                                                 dcc.Dropdown(
                                                     options=options_dropdown_countries,
                                                     placeholder="Seleccione países",
@@ -475,14 +493,18 @@ model_layout = html.Div(
                                             children=[
                                                 html.P(
                                                     "Expectativa economía: ",
-                                                    style={"height": "auto", "margin-bottom": "auto"},
+                                                    style={
+                                                        "height": "auto", "margin-bottom": "auto"},
                                                 ),
                                                 dcc.RadioItems(
                                                     id="selector_gdp",
-                                                    labelStyle={"display": "inline-block", "font-size": 14},
+                                                    labelStyle={
+                                                        "display": "inline-block", "font-size": 14},
                                                     value="Esperada",
-                                                    options=["Mal", "Esperada", "Bien"],
-                                                    style={"padding-top": "5%"},
+                                                    options=[
+                                                        "Mal", "Esperada", "Bien"],
+                                                    style={
+                                                        "padding-top": "5%"},
                                                     className="dcc_compon",
                                                     inputStyle={
                                                         "margin-left": "1px",  # Espacio entre el círculo y el texto
@@ -515,7 +537,8 @@ model_layout = html.Div(
                                             style={"margin-right": "1.5%"},
                                         ),
                                     ],
-                                    style={"display": "flex", "flexWrap": "wrap"},
+                                    style={"display": "flex",
+                                           "flexWrap": "wrap"},
                                 ),
                             ],
                             style={
@@ -602,7 +625,8 @@ def prediction_callback(
 
         print(testX)
 
-        gdp_forecast_year = gdp_forecast[gdp_forecast["Year"] == testX["year"].iloc[0]]["GDP_forecast"].iloc[0]
+        gdp_forecast_year = gdp_forecast[gdp_forecast["Year"]
+                                         == testX["year"].iloc[0]]["GDP_forecast"].iloc[0]
 
         if gdp_expectation == "Esperada":
             testX["gdp"] = gdp_forecast_year
@@ -643,15 +667,18 @@ def prediction_callback(
                     ),
                     html.H1(
                         children=[f"${formatted_revenue}"],
-                        style={"text-align": "center", "font-size": "3vw", "color": "#00379A"},
+                        style={"text-align": "center",
+                               "font-size": "3vw", "color": "#00379A"},
                     ),
                     html.P(
                         ["Diferencia con el presupuesto:"],
-                        style={"text-align": "center", "font-size": "14", "color": "black"},
+                        style={"text-align": "center",
+                               "font-size": "14", "color": "black"},
                     ),
                     html.H3(
                         children=[f"${formatted_difference}"],
-                        style={"text-align": "center", "font-size": "2vw", "color": difference_color},
+                        style={"text-align": "center",
+                               "font-size": "2vw", "color": difference_color},
                     ),
                 ]
             ),
