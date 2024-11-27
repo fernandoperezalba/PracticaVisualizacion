@@ -9,7 +9,7 @@ from src.pages.home import home_layout
 import os
 import sys
 
-# Set up the base path
+# Setup the base path to ensure proper module importing
 basepath = os.path.join(os.path.dirname(__file__), "../")
 sys.path.insert(1, basepath)
 
@@ -26,11 +26,11 @@ app.title = "Análisis Películas"
 # Expose the Flask server
 server = app.server
 
-# Load data and model
+# Process data and train model
 df_plots, df_model = data_processing()
 model = train_model(df_model)
 
-# Define styles for tabs
+# Define tab styles
 tabs_styles = {
     "flex-direction": "row",
 }
@@ -60,11 +60,11 @@ tab_selected_style = {
     "height": "10%",
 }
 
-# Define the layout of the app
+# Define the app layout
 app.layout = html.Div(
     [
         html.Div(
-            [  # Header
+            [  # encabezado
                 html.Div(
                     children=[html.Img(src="assets/logo.png", height="50px")],
                     className="one columns",
@@ -129,6 +129,6 @@ app.layout = html.Div(
     ]
 )
 
-# Run the app
+# Run the server
 if __name__ == "__main__":
     app.run_server(debug=True)
