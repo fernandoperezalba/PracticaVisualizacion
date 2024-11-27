@@ -10,7 +10,7 @@ from src.pages.home import home_layout
 from src.pages.analysis import analysis_layout
 from src.pages.model import model_layout
 from src.preprocessing.data_processing import data_processing
-from src.app import app
+from src.app import app, server
 from src.modelling.train_model import train_model
 
 
