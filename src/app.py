@@ -10,10 +10,8 @@ import os
 import sys
 
 # Set up the base path
-current_path = os.path.dirname(os.path.abspath(__file__))
-basepath = os.path.abspath(os.path.join(current_path, "../"))
-sys.path.insert(0, basepath)
-
+basepath = os.path.join(os.path.dirname(__file__), "../")
+sys.path.insert(1, basepath)
 
 # Initialize the Dash app
 app = dash.Dash(
