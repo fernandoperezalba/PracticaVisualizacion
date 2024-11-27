@@ -55,71 +55,73 @@ tab_selected_style = {
 }
 
 
-app.layout = html.Div(
-    [
-        html.Div(
-            [  # encabezado
-                html.Div(
-                    children=[html.Img(src="assets/logo.png", height="50px")],
-                    className="one columns",
-                    id="title1",
-                ),
-                html.Div(
-                    [
-                        html.Div(
-                            [
-                                html.H1(
-                                    "Análisis Películas",
-                                    className="fix_label",
-                                    style={"margin-bottom": "0px", "color": "#00379A", "fontWeight": "bold"},
-                                ),
-                            ]
-                        )
-                    ],
-                    className="two-thirds column",
-                    id="title2",
-                ),
-            ],
-            id="header",
-            className="row flex-display",
-            style={"margin-bottom": "0px"},
-        ),
-        html.Hr(style={"borderColor": "#660091"}),
-        html.Div(
-            [
-                dcc.Tabs(
-                    id="tabs-styled-with-inline",
-                    value="home",
-                    children=[
-                        dcc.Tab(
-                            home_layout,
-                            label="Home",
-                            value="home",
-                            style=tab_style,
-                            selected_style=tab_selected_style,
-                        ),
-                        dcc.Tab(
-                            analysis_layout,
-                            label="Análisis",
-                            value="analysis",
-                            style=tab_style,
-                            selected_style=tab_selected_style,
-                        ),
-                        dcc.Tab(
-                            model_layout,
-                            label="Modelo",
-                            value="model",
-                            style=tab_style,
-                            selected_style=tab_selected_style,
-                        ),
-                    ],
-                    style=tabs_styles,
-                    colors={"border": None, "primary": None, "background": None},
-                ),
-            ]
-        ),
-    ]
-)
+app.layout = html.Div([html.H1("Hello, Dash!")])
+
+# html.Div(
+#     [
+#         html.Div(
+#             [  # encabezado
+#                 html.Div(
+#                     children=[html.Img(src="assets/logo.png", height="50px")],
+#                     className="one columns",
+#                     id="title1",
+#                 ),
+#                 html.Div(
+#                     [
+#                         html.Div(
+#                             [
+#                                 html.H1(
+#                                     "Análisis Películas",
+#                                     className="fix_label",
+#                                     style={"margin-bottom": "0px", "color": "#00379A", "fontWeight": "bold"},
+#                                 ),
+#                             ]
+#                         )
+#                     ],
+#                     className="two-thirds column",
+#                     id="title2",
+#                 ),
+#             ],
+#             id="header",
+#             className="row flex-display",
+#             style={"margin-bottom": "0px"},
+#         ),
+#         html.Hr(style={"borderColor": "#660091"}),
+#         html.Div(
+#             [
+#                 dcc.Tabs(
+#                     id="tabs-styled-with-inline",
+#                     value="home",
+#                     children=[
+#                         dcc.Tab(
+#                             home_layout,
+#                             label="Home",
+#                             value="home",
+#                             style=tab_style,
+#                             selected_style=tab_selected_style,
+#                         ),
+#                         dcc.Tab(
+#                             analysis_layout,
+#                             label="Análisis",
+#                             value="analysis",
+#                             style=tab_style,
+#                             selected_style=tab_selected_style,
+#                         ),
+#                         dcc.Tab(
+#                             model_layout,
+#                             label="Modelo",
+#                             value="model",
+#                             style=tab_style,
+#                             selected_style=tab_selected_style,
+#                         ),
+#                     ],
+#                     style=tabs_styles,
+#                     colors={"border": None, "primary": None, "background": None},
+#                 ),
+#             ]
+#         ),
+#     ]
+# )
 
 
 if __name__ == "__main__":
