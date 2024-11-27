@@ -1,6 +1,5 @@
 import dash
 import dash_bootstrap_components as dbc
-from dash import html
 
 # Initialize the Dash app
 app = dash.Dash(
@@ -14,9 +13,3 @@ app.title = "Análisis Películas"
 
 # Expose the Flask server
 server = app.server
-
-# Placeholder layout
-app.layout = html.Div([
-    html.H1("Cargando aplicación..."),
-    html.P("Espera mientras se inicializa la aplicación.")
-])
