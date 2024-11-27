@@ -13,7 +13,7 @@ basepath = os.path.join(os.path.dirname(__file__), "../../")
 sys.path.insert(1, basepath)
 
 from src.utils.utils import load_processed_data
-from src.app_init import app
+from src.app import app
 
 
 df = load_processed_data()

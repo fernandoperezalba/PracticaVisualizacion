@@ -12,7 +12,7 @@ basepath = os.path.join(os.path.dirname(__file__), "../../")
 sys.path.insert(1, basepath)
 
 from src.utils.utils import load_model_data
-from src.app_init import app
+from src.app import app
 from src.pages.analysis import options_dropdown_genre, options_dropdown_companies, options_dropdown_language
 from src.preprocessing.data_processing import extract_date_related_features
 
