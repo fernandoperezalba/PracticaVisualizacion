@@ -1,5 +1,5 @@
 from src.modelling.train_model import train_model
-from app import app
+from src.app_init import app
 from src.preprocessing.data_processing import data_processing
 from src.pages.model import model_layout
 from src.pages.analysis import analysis_layout
@@ -17,13 +17,14 @@ sys.path.insert(1, basepath)
 df_plots, df_model = data_processing()
 model = train_model(df_model)
 
-# Initialize the Dash app
-# app = dash.Dash(
-#     __name__,
-#     suppress_callback_exceptions=True,
-#     external_stylesheets=[dbc.themes.LUX],
-#     meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1.0"}],
-# )
+Initialize the Dash app
+app = dash.Dash(
+    __name__,
+    suppress_callback_exceptions=True,
+    external_stylesheets=[dbc.themes.LUX],
+    meta_tags=[{"name": "viewport",
+                "content": "width=device-width, initial-scale=1.0"}],
+)
 
 tabs_styles = {
     "flex-direction": "row",
