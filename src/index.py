@@ -14,8 +14,8 @@ from src.app import app
 from src.modelling.train_model import train_model
 
 
-df_plots, df_model = data_processing()
-model = train_model(df_model)
+# df_plots, df_model = data_processing()
+# model = train_model(df_model)
 
 # Initialize the Dash app
 # app = dash.Dash(

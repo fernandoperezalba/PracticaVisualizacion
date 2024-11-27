@@ -14,7 +14,8 @@ def load_processed_data():
 
 
 def load_model_data():
-    df = pd.read_csv("data/processed/df_model.csv")
+    csv_path = os.path.join(basepath, "data/processed/df_model.csv")
+    df = pd.read_csv(csv_path)
     target = "revenue"
     df_X = df.drop(columns=[target, "vote_average", "vote_count"])
     df_y = df[[target]]

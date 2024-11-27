@@ -21,11 +21,11 @@ from src.preprocessing.data_processing import extract_date_related_features
 df_X, df_y = load_model_data()
 
 # load model and test metrics
-model = pickle.load(open("data/models/catboost_model.pkl", "rb"))
-df_metrics = pd.read_csv("data/models/df_metrics.csv")
+model = pickle.load(open(os.path.join(basepath, "data/models/catboost_model.pkl"), "rb"))
+df_metrics = pd.read_csv(os.path.join(basepath, "data/models/df_metrics.csv"))
 
 # load gdp forecast data
-gdp_forecast = pd.read_csv("data/raw/GDP_forecast.csv")
+gdp_forecast = pd.read_csv(os.path.join(basepath, "data/raw/GDP_forecast.csv"))
 
 # Crear opciones para los países
 prod_countries = ["Canada", "France", "Germany", "Other_country", "United Kingdom", "United States of America"]
