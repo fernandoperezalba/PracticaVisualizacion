@@ -69,7 +69,7 @@ app.layout = html.Div(
                         html.Div(
                             [
                                 html.H1(
-                                    "Análisis Películas",
+                                    "CINEMA PROPHET",
                                     className="fix_label",
                                     style={"margin-bottom": "0px", "color": "#00379A", "fontWeight": "bold"},
                                 ),
